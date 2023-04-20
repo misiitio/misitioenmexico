@@ -1,0 +1,200 @@
+
+.mx-sidebar{
+  display: inline-block;
+  height:100%;
+  background-color:#fff;
+  margin: -6px;
+  position: absolute;
+  overflow-y: auto;
+  }
+
+
+
+.mx-light-grey{
+
+  background-color:grey;
+  
+  }
+  
+.mx-bar-block{
+  top:3px;
+  left:0;
+  width:100%;
+  display:block;
+  padding:8px 16px;
+  text-align:left;
+  border:none;
+  white-space:normal;
+  float:none;
+  outline:0;
+  
+  
+}
+  
+.mx-bar-item {
+  text-decoration:none;
+  color:white;
+  padding:8px;
+  
+  width:100%;
+  border:none;
+  display:block;
+  outline:0;
+}
+
+
+.mx-button {
+  white-space:normal;
+  }
+
+.mx-button:hover{
+  color:#000;
+  background-color:#ccc;
+  }
+
+
+.mx-content {
+  margin-left:29%;
+  
+  
+}
+
+
+.mx-teal a{
+  font-size:30px;
+  text-decoration:none;
+  display: inline-block;
+  width: 100%;
+  height: 30px;
+  color:white;
+  background-color:#009688;
+  padding: 40px 15%;
+  margin: -22px ;
+
+  }
+
+
+ .scrollmenu {
+  display: inline-block;
+  width: 100%;
+  margin: 0px -17px;
+  padding: 0px 14%;
+}
+
+div.scrollmenu {
+  background-color: #333;
+  
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
+
+.mx-container{
+  display: inline-block;
+  clear: both;
+  margin: 7px;
+  padding: 0px;
+  
+}
+
+article {
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+    background: rgba(0,0,0,0.7);
+    margin: 50px auto;
+    width: 70%;
+    border: 2px solid #FFA800;
+    border-radius: 10px;
+    box-shadow: 0 0 4px #FFA800;
+    color: #FFA800;
+    text-align: center;
+}
+
+#mapa {
+    height: 400px;
+    width: 210px;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+#parar {
+    display: block;
+    margin: 20px auto 30px;
+    width: 100px;
+    border: 2px solid #FFA800;
+    border-radius: 10px;
+    box-shadow: 0 0 4px #FFA800;
+    color: #FFA800;
+}
+
+
+#parar:hover {
+    border: 2px solid #2E5E90;
+    box-shadow: 0 0 4px #2E5E90;
+    color: #2E5E90;
+}
+
+
+.menu-btn {
+  text-decoration:none;
+  color:white;
+  padding:8px;
+  background-color: grey;
+  width:auto;
+  border:none;
+  display:block;
+  outline:0;
+
+}
+
+
+.dropdown-menu {
+   position: relative;
+   display: inline-block;
+  
+}
+
+.menu-content {
+   display: none;
+   position: absolute;
+   background-color:#fff;
+   min-width: 160px;
+   z-index: 1;
+}
+
+
+
+.links {
+   text-decoration:none;
+  color:white;
+  padding:8px;
+  background-color:purple;
+  width:auto;
+  border:none;
+  display:block;
+  outline:0;
+}
+
+.links:hover {
+   color:#000;
+  background-color:#ccc;
+}
+
+
+.dropdown-menu:hover .menu-btn {
+  
+}
+
