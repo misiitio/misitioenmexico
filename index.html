@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-<link rel="stylesheet" href="./style.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -11,13 +10,144 @@
     
 
 </head>
+<style>
+
+.mx-sidebar{
+  display: inline-block;
+  height:100%;
+  background-color:#fff;
+  margin: -5px -8px;
+  position: elastic;
+  overflow-y: auto;
+  }
+
+
+
+.mx-light-grey{
+
+  background-color:grey;
+  
+  }
+  
+.mx-bar-block{
+  top:3px;
+  left:0;
+  width:20%;
+  display:block;
+  padding:8px 14px;
+  text-align:left;
+  border:none;
+  white-space:normal;
+  float:none;
+  outline:0;
+  
+  
+}
+  
+.mx-bar-item {
+  text-decoration:none;
+  color:white;
+  padding:8px;
+  
+  width:100%;
+  border:none;
+  display:block;
+  outline:0;
+}
+
+
+.mx-button {
+  white-space:normal;
+  }
+
+.mx-button:hover{
+  color:#000;
+  background-color:#ccc;
+  }
+
+
+.mx-content {
+  margin-left:;
+  
+  
+}
+
+
+.mx-teal a{
+  font-size:30px;
+  text-align: center;
+  text-decoration:none;
+  display: inline-block;
+  width: 100%;
+  height: 30px;
+  color:white;
+  background-color:#009688;
+  padding: 40px 13px;
+  margin: -22px ;
+
+  }
+
+
+ .scrollmenu {
+  display: inline-block;
+  width: 100%;
+  margin: 0px -8px;
+  padding: 1px 5.8px;
+}
+
+div.scrollmenu {
+  background-color: #333;
+  
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
+
+.mx-container{
+  clear: both;
+  width: 300px;
+  margin: -1000px 250px 240px 95px;
+  padding: 10px 10px 10px 10px;
+  text-align: center;
+  
+}
+
+
+
+</style>
+
 <body>
   
-      
+<!-- Page Content -->
+
+<div class="mx-content">
+
+<div class="mx-teal">
+  <h1><a href="./index.html">misitioenmexico</a></h1>
+</div>
+
+<div class="scrollmenu">
+  <a href="./noticieros.html">Noticieros</a>
+  <a href="./servicioalcliente.html">Atencion Telefonica</a>
+  <a href="./geolocalizador.html">Herramientas</a>
+</div>
+</div>      
 
   <!-- Sidebar -->
 
-  <div class="mx-sidebar mx-light-grey mx-bar-block" style="width: 25%;">
+  <div class="mx-sidebar mx-light-grey mx-bar-block">
   <h3 class="mx-bar-item">Estados</h3>
 
 <!-- input tag -->
@@ -25,7 +155,6 @@
     <input id="searchbar" onkeyup="search_estado()" type="text"
         name="search" placeholder="Busca un estado..">
 
-<!-- Test code -->
 
 <a href="./aguascalientes.html" class="mx-bar-item mx-button">Aguascalientes</a>
 <a href="./bajacalifornia.html" class="mx-bar-item mx-button">Baja California</a>
@@ -59,52 +188,23 @@
 <a href="./veracruz.html" class="mx-bar-item mx-button">Veracruz</a>
 <a href="./yucatan.html" class="mx-bar-item mx-button">Yucatan</a>
 <a href="./zacatecas.html" class="mx-bar-item mx-button">Zacatecas</a>
-
- 
-
-  
-
-
   
 </div>
 
 
-<!-- Page Content -->
-
-<div class="mx-content">
-
-<div class="mx-teal">
-  <h1><a href="./index.html">misitioenmexico</a></h1>
-
-
-</div>
-
-
-<div class="scrollmenu">
-  <a href="./noticieros.html">Noticieros</a>
-  <a href="./servicioalcliente.html">Atencion Telefonica</a>
-  <a href="./geolocalizador.html">Herramientas</a>
-</div>
 
 
 <div class="mx-container">
 
 
 <h3>Sobre Misitioenmexico</h3>
-
 <p>Trabaja en la digitalización del desarrollo de pequeños negocios a grandes empresas como servicios productos e informacion facilite la disponibilidad a todo el público en general.</p>
 
 </div>
-
-</div>
-
-
 
 
 <!-- linking javascript -->
     <script type="text/javascript" src="./estados.js"></script>
     
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3325034913872724"
-     crossorigin="anonymous"></script>
 </body>
 </html>
