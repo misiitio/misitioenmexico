@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <title>misitioenmexico</title>
-    
-    
 
-</head>
-<style>
+    <style type="text/css">
 
-.mx-sidebar{
+        #mynetwork {
+            width: 1000px;
+            height: 500px;
+            border: 1px solid lightgray;
+        }
+
+        .mx-sidebar{
   display: inline-block;
   height:100%;
   background-color:#fff;
@@ -118,18 +120,17 @@ div.scrollmenu a:hover {
 .mx-container{
   clear: both;
   width: 300px;
-  margin: -1000px 250px 240px 95px;
+  margin: -700px 250px 240px 95px;
   padding: 10px 10px 10px 10px;
   text-align: center;
   
 }
 
 
-
-</style>
-
+    </style>
+</head>
 <body>
-  
+
 <!-- Page Content -->
 
 <div class="mx-content">
@@ -143,57 +144,9 @@ div.scrollmenu a:hover {
   <a href="./servicioalcliente.html">Atencion Telefonica</a>
   <a href="./geolocalizador.html">Herramientas</a>
 </div>
-</div>      
-
-  <!-- Sidebar -->
-
-  <div class="mx-sidebar mx-light-grey mx-bar-block">
-  <h3 class="mx-bar-item">Estados</h3>
-
-<!-- input tag -->
-
-    <input id="searchbar" onkeyup="search_estado()" type="text"
-        name="search" placeholder="Busca un estado..">
-
-
-<a href="./aguascalientes.html" class="mx-bar-item mx-button">Aguascalientes</a>
-<a href="./bajacalifornia.html" class="mx-bar-item mx-button">Baja California</a>
-<a href="./bajacaliforniasur.html" class="mx-bar-item mx-button">Baja California Sur</a>
-<a href="./campeche.html" class="mx-bar-item mx-button">Campeche</a>
-<a href="./chiapas.html" class="mx-bar-item mx-button">Chiapas</a>
-<a href="./chihuahua.html" class="mx-bar-item mx-button">Chihuahua</a>
-<a href="./ciudaddemexico.html" class="mx-bar-item mx-button">Ciudad de Mexico</a>
-<a href="./colima.html" class="mx-bar-item mx-button">Colima</a>
-<a href="./coahuiladezaragoza.html" class="mx-bar-item mx-button">Coahuila de Zaragoza</a>
-<a href="./durango.html" class="mx-bar-item mx-button">Durango</a>
-<a href="./estadodemexico.html" class="mx-bar-item mx-button">Estado de Mexico</a>
-<a href="./estadodehidalgo.html" class="mx-bar-item mx-button">Estado de Hidalgo</a>
-<a href="./guanajuato.html" class="mx-bar-item mx-button">Guanajuato</a>
-<a href="./guerrero.html" class="mx-bar-item mx-button">Guerrero</a>
-<a href="./jalisco.html" class="mx-bar-item mx-button">Jalisco</a>
-<a href="./michoacan.html" class="mx-bar-item mx-button">Michoacan</a>
-<a href="./morelos.html" class="mx-bar-item mx-button">Morelos</a>
-<a href="./nayarit.html" class="mx-bar-item mx-button">Nayarit</a>
-<a href="./nuevoleon.html" class="mx-bar-item mx-button">Nuevo Leon</a>
-<a href="./oaxaca.html" class="mx-bar-item mx-button">Oaxaca</a>
-<a href="./puebla.html" class="mx-bar-item mx-button">Puebla</a>
-<a href="./queretaro.html" class="mx-bar-item mx-button">Queretaro</a>
-<a href="./quintanaroo.html" class="mx-bar-item mx-button">Quintana Roo</a>
-<a href="./sanluispotosi.html" class="mx-bar-item mx-button">San Luis Potosi</a>
-<a href="./sinaloa.html" class="mx-bar-item mx-button">Sinaloa</a>
-<a href="./sonora.html" class="mx-bar-item mx-button">Sonora</a>
-<a href="./tabasco.html" class="mx-bar-item mx-button">Tabasco</a>
-<a href="./tamaulipas.html" class="mx-bar-item mx-button">Tamaulipas</a>
-<a href="./tlaxcala.html" class="mx-bar-item mx-button">Tlaxcala</a>
-<a href="./veracruz.html" class="mx-bar-item mx-button">Veracruz</a>
-<a href="./yucatan.html" class="mx-bar-item mx-button">Yucatan</a>
-<a href="./zacatecas.html" class="mx-bar-item mx-button">Zacatecas</a>
-  
 </div>
 
-
-
-
+<div id="mynetwork"></div>
 <div class="mx-container">
 
 
@@ -203,8 +156,105 @@ div.scrollmenu a:hover {
 </div>
 
 
-<!-- linking javascript -->
-    <script type="text/javascript" src="./estados.js"></script>
-    
+
+<script type="text/javascript">
+// create an array with nodes
+var nodes = new vis.DataSet([
+    { id: 1, label: 'Aguascalientes', url: 'aguascalientes.html' },
+    { id: 2, label: 'Baja California', url: 'bajacalifornia.html' },
+    { id: 3, label: 'Baja California Sur', url: 'bajacaliforniasur.html' },
+    { id: 4, label: 'Campeche', url: 'campeche.html' },
+    { id: 5, label: 'Chiapas', url: 'chiapas.html' },
+    { id: 6, label: 'Chihuahua', url: 'chihuahua.html' },
+    { id: 7, label: 'Ciudad de Mexico', url: 'ciudaddemexico.html' },
+    { id: 8, label: 'Coahuila de Zaragoza', url: 'coahuiladezaragoza.html' },
+    { id: 9, label: 'Colima', url: 'colima.html' },
+    { id: 10, label: 'Durango', url: 'durango.html' },
+    { id: 11, label: 'Estado de Mexico', url: 'estadodemexico.html' },
+    { id: 12, label: 'Guanajuato', url: 'guanajuato.html' },
+    { id: 13, label: 'Guerrero', url: 'guerrero.html' },
+    { id: 14, label: 'Hidalgo', url: 'hidalgo.html' },
+    { id: 15, label: 'Jalisco', url: 'jalisco.html' },
+    { id: 16, label: 'Michoacan', url: 'michoacan.html' },
+    { id: 17, label: 'Morelos', url: 'morelos.html' },
+    { id: 18, label: 'Nayarit', url: 'nayarit.html' },
+    { id: 19, label: 'Nuevo Leon', url: 'nuevoleon.html' },
+    { id: 20, label: 'Oaxaca', url: 'oaxaca.html' },
+    { id: 21, label: 'Puebla', url: 'puebla.html' },
+    { id: 22, label: 'Queretaro', url: 'queretaro.html' },
+    { id: 23, label: 'Quintana Roo', url: 'quintanaroo.html' },
+    { id: 24, label: 'San Luis Potosi', url: 'sanluispotosi.html' },
+    { id: 25, label: 'Sinaloa', url: 'sinaloa.html' },
+    { id: 26, label: 'Sonora', url: 'sonora.html' },
+    { id: 27, label: 'Tabasco', url: 'tabasco.html' },
+    { id: 28, label: 'Tamaulipas', url: 'tamaulipas.html' },
+    { id: 29, label: 'Tlaxcala', url: 'tlaxcala.html' },
+    { id: 30, label: 'Veracruz', url: 'veracruz.html' },
+    { id: 31, label: 'Yucatan', url: 'yucatan.html' },
+    { id: 32, label: 'Zacatecas', url: 'zacatecas.html' },
+    ]);
+
+// create an array with edges
+var edges = new vis.DataSet([
+    {from: 1, to: 3},
+    {from: 1, to: 2},
+    {from: 2, to: 4},
+    {from: 2, to: 5},
+    {from: 3, to: 6},
+    {from: 4, to: 7},
+    {from: 4, to: 8},
+    {from: 5, to: 9},
+    {from: 5, to: 10},
+    {from: 6, to: 11},
+    {from: 6, to: 12},
+    {from: 7, to: 13},
+    {from: 7, to: 14},
+    {from: 8, to: 15},
+    {from: 8, to: 16},
+    {from: 9, to: 17},
+    {from: 9, to: 18},
+    {from: 10, to: 19},
+    {from: 10, to: 20},
+    {from: 11, to: 21},
+    {from: 11, to: 22},
+    {from: 12, to: 23},
+    {from: 12, to: 24},
+    {from: 13, to: 25},
+    {from: 13, to: 26},
+    {from: 14, to: 27},
+    {from: 14, to: 28},
+    {from: 15, to: 29},
+    {from: 15, to: 30},
+    {from: 16, to: 31},
+    {from: 16, to: 32}
+]);
+
+
+    // create a network
+    var container = document.getElementById('mynetwork');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {};
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+
+    // Add event listener for node click
+    network.on("click", function (params) {
+        if (params.nodes.length === 1) {
+            var nodeId = params.nodes[0];
+            var node = nodes.get(nodeId);
+            if (node.url) {
+                window.location.href = node.url;
+            }
+        }
+    });
+</script>
+
+
 </body>
 </html>
