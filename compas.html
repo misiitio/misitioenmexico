@@ -5,52 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compás en Tiempo Real</title>
   <link rel="stylesheet" href="style.css">
-  
-<style type="text/css">
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f4f4f4;
-}
+  <style type="text/css">
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
 
-#compass-container {
-  width: 300px;
-  height: 300px;
-  position: relative;
-  border-radius: 50%;
-  border: 5px solid #000;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    #compass-container {
+      width: 300px;
+      height: 300px;
+      position: relative;
+      border-radius: 50%;
+      border: 5px solid #000;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-#compass {
-  width: 90%;
-  height: 90%;
-  position: relative;
-  border-radius: 50%;
-  background-color: #e6e6e6;
-}
+    #compass {
+      width: 90%;
+      height: 90%;
+      position: relative;
+      border-radius: 50%;
+      background-color: #e6e6e6;
+    }
 
-#needle {
-  position: absolute;
-  width: 4px;
-  height: 50%;
-  background-color: red;
-  top: 50%;
-  left: 50%;
-  transform-origin: 50% 100%;
-  transform: rotate(0deg);
-  transition: transform 0.1s ease-out;
-}
-  
-</style>
-  
+    #needle {
+      position: absolute;
+      width: 4px;
+      height: 50%;
+      background-color: red;
+      top: 50%;
+      left: 50%;
+      transform-origin: 50% 100%;
+      transform: rotate(0deg);
+      transition: transform 0.1s ease-out;
+    }
+  </style>
 </head>
 <body>
   <div id="compass-container">
@@ -58,27 +55,25 @@ body {
       <div id="needle"></div>
     </div>
   </div>
-  
-  <script src="script.js"></script>
+
   <script>
+    // Espera a que la API de orientación esté disponible
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', function(event) {
+        // Accede al valor de la brújula en el evento de orientación
+        const alpha = event.alpha; // Azimuth (norte en grados)
 
-// Espera a que la API de orientación esté disponible
-if (window.DeviceOrientationEvent) {
-  window.addEventListener('deviceorientation', function(event) {
-    // Accede al valor de la brújula en el evento de orientación
-    const alpha = event.alpha; // Azimuth (norte en grados)
-
-    // Si alpha no es undefined, actualiza la aguja
-    if (alpha !== null) {
-      const needle = document.getElementById('needle');
-      
-      // Actualiza la rotación de la aguja con el valor de alpha (en grados)
-      needle.style.transform = `rotate(${alpha}deg)`;
+        // Si alpha no es undefined, actualiza la aguja
+        if (alpha !== null) {
+          const needle = document.getElementById('needle');
+          
+          // Actualiza la rotación de la aguja con el valor de alpha (en grados)
+          needle.style.transform = `rotate(${alpha}deg)`;
+        }
+      });
+    } else {
+      alert("La orientación del dispositivo no está soportada en este navegador.");
     }
-  });
-} else {
-  alert("La orientación del dispositivo no está soportada en este navegador.");
-}
   </script>
 </body>
 </html>
