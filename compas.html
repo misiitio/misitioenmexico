@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compás en Tiempo Real</title>
+  <link rel="stylesheet" href="style.css">
+  
+<style type="text/css">
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f4;
+}
+
+#compass-container {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border-radius: 50%;
+  border: 5px solid #000;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#compass {
+  width: 90%;
+  height: 90%;
+  position: relative;
+  border-radius: 50%;
+  background-color: #e6e6e6;
+}
+
+#needle {
+  position: absolute;
+  width: 4px;
+  height: 50%;
+  background-color: red;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  transform: rotate(0deg);
+  transition: transform 0.1s ease-out;
+}
+  
+</style>
+  
+</head>
+<body>
+  <div id="compass-container">
+    <div id="compass">
+      <div id="needle"></div>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+
+    // Verificar si el navegador soporta la geolocalización y orientación
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", function(event) {
+    // Obtener la dirección de la brújula
+    let alpha = event.alpha; // Dirección en grados
+
+    // Rotar la aguja del compás
+    let needle = document.getElementById("needle");
+    needle.style.transform = `rotate(${alpha}deg)`;
+  });
+} else {
+  alert("Tu dispositivo no soporta la orientación.");
+}
+  </script>
+</body>
+</html>
