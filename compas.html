@@ -61,18 +61,22 @@ body {
   
   <script type="text/javascript">
 
-    // Verificar si el navegador soporta la geolocalización y orientación
+// Espera a que la API de orientación esté disponible
 if (window.DeviceOrientationEvent) {
-  window.addEventListener("deviceorientation", function(event) {
-    // Obtener la dirección de la brújula
-    let alpha = event.alpha; // Dirección en grados
+  window.addEventListener('deviceorientation', function(event) {
+    // Accede al valor de la brújula en el evento de orientación
+    const alpha = event.alpha; // Azimuth (norte en grados)
 
-    // Rotar la aguja del compás
-    let needle = document.getElementById("needle");
-    needle.style.transform = `rotate(${alpha}deg)`;
+    // Si alpha no es undefined, actualiza la aguja
+    if (alpha !== null) {
+      const needle = document.getElementById('needle');
+      
+      // Actualiza la rotación de la aguja con el valor de alpha (en grados)
+      needle.style.transform = `rotate(${alpha}deg)`;
+    }
   });
 } else {
-  alert("Tu dispositivo no soporta la orientación.");
+  alert("La orientación del dispositivo no está soportada en este navegador.");
 }
   </script>
 </body>
