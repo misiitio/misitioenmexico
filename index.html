@@ -189,11 +189,25 @@ div.scrollmenu a:hover {
     if (window.DeviceOrientationEvent) {
     window.addEventListener('deviceorientation', function(event) {
         let alpha = event.alpha; // El ángulo de orientación del dispositivo en grados
-        document.getElementById('arrow').style.transform = `rotate(${alpha}deg)`;
+        let beta = event.beta; // El ángulo de inclinación frontal-trasero
+        let gamma = event.gamma; // El ángulo de inclinación izquierda-derecha
+
+        // Asegúrate de que el elemento 'arrow' exista
+        let arrowElement = document.getElementById('arrow');
+        if (arrowElement) {
+            arrowElement.style.transform = `rotate(${alpha}deg)`;
+        } else {
+            console.error('Elemento con id "arrow" no encontrado.');
+        }
+
+        // Opcional: Mostrar los valores de orientación en la consola
+        console.log(`alpha: ${alpha}, beta: ${beta}, gamma: ${gamma}`);
     });
 } else {
     alert('La API de orientación del dispositivo no es compatible con su navegador.');
     }
+    
+
     
 // create an array with nodes
 var nodes = new vis.DataSet([
