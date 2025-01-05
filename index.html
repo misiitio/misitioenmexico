@@ -15,26 +15,36 @@
         }
 
         #compass {
-    width: 200px;
-    height: 200px;
-    border: 5px solid black;
-    border-radius: 50%;
-    position: relative;
-    margin: 50px auto;
-    background: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    widt#compass-container {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border-radius: 50%;
+  border: 5px solid #000;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#arrow {
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 80px solid red;
-    position: absolute;
-    top: 20px;
+#compass {
+  width: 90%;
+  height: 90%;
+  position: relative;
+  border-radius: 50%;
+  background-color: #e6e6e6;
+}
+
+#needle {
+  position: absolute;
+  width: 4px;
+  height: 50%;
+  background-color: red;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  transform: rotate(0deg);
+  transition: transform 0.1s ease-out;
 }
 
         .mx-sidebar{
@@ -177,36 +187,28 @@ div.scrollmenu a:hover {
 
 <h3>Sobre Misitioenmexico</h3>
 <p>Trabaja en la digitalización del desarrollo de pequeños negocios a grandes empresas como servicios productos e informacion facilite la disponibilidad a todo el público en general.</p>
-<div id="compass">
-        <div id="arrow"></div>
-</div>
+<div id="compass-container">
+    <div id="compass">
+      <div id="needle"></div>
 </div>
 
 
 
 <script type="text/javascript">
 
-    if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', function(event) {
-        let alpha = event.alpha; // El ángulo de orientación del dispositivo en grados
-        let beta = event.beta; // El ángulo de inclinación frontal-trasero
-        let gamma = event.gamma; // El ángulo de inclinación izquierda-derecha
+    // Verificar si el navegador soporta la geolocalización y orientación
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", function(event) {
+    // Obtener la dirección de la brújula
+    let alpha = event.alpha; // Dirección en grados
 
-        // Asegúrate de que el elemento 'arrow' exista
-        let arrowElement = document.getElementById('arrow');
-        if (arrowElement) {
-            arrowElement.style.transform = `rotate(${alpha}deg)`;
-        } else {
-            console.error('Elemento con id "arrow" no encontrado.');
-        }
-
-        // Opcional: Mostrar los valores de orientación en la consola
-        console.log(`alpha: ${alpha}, beta: ${beta}, gamma: ${gamma}`);
-    });
+    // Rotar la aguja del compás
+    let needle = document.getElementById("needle");
+    needle.style.transform = `rotate(${alpha}deg)`;
+  });
 } else {
-    alert('La API de orientación del dispositivo no es compatible con su navegador.');
-    }
-    
+  alert("Tu dispositivo no soporta la orientación.");
+}
 
     
 // create an array with nodes
