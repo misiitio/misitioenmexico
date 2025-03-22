@@ -1,78 +1,77 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compás en Tiempo Real</title>
-  <link rel="stylesheet" href="style.css">
-  <style type="text/css">
+  <title>Compass</title>
+  <style>
+    /* CSS Styling */
     body {
-      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      background-color: #f4f4f4;
+      background-color: #f0f0f0;
     }
 
-    #compass-container {
-      width: 300px;
-      height: 300px;
+    .compass {
+      width: 200px;
+      height: 200px;
       position: relative;
+    }
+
+    .compass-circle {
+      width: 100%;
+      height: 100%;
+      border: 5px solid #333;
       border-radius: 50%;
-      border: 5px solid #000;
+      position: relative;
       background-color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
 
-    #compass {
-      width: 90%;
-      height: 90%;
-      position: relative;
-      border-radius: 50%;
-      background-color: #e6e6e6;
-    }
-
-    #needle {
+    .compass-arrow {
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 100px solid red;
       position: absolute;
-      width: 4px;
-      height: 50%;
-      background-color: red;
       top: 50%;
       left: 50%;
-      transform-origin: 50% 100%;
-      transform: rotate(0deg);
-      transition: transform 0.1s ease-out;
+      transform: translate(-50%, -50%);
+      transform-origin: bottom center;
     }
   </style>
 </head>
 <body>
-  <div id="compass-container">
-    <div id="compass">
-      <div id="needle"></div>
+  <!-- HTML Structure -->
+  <div class="compass">
+    <div class="compass-circle">
+      <div class="compass-arrow"></div>
     </div>
   </div>
 
+  <!-- JavaScript Logic -->
   <script>
-    // Espera a que la API de orientación esté disponible
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', function(event) {
-        // Accede al valor de la brújula en el evento de orientación
-        const alpha = event.alpha; // Azimuth (norte en grados)
+    window.addEventListener('deviceorientation', handleOrientation);
 
-        // Si alpha no es undefined, actualiza la aguja
-        if (alpha !== null) {
-          const needle = document.getElementById('needle');
-          
-          // Actualiza la rotación de la aguja con el valor de alpha (en grados)
-          needle.style.transform = `rotate(${alpha}deg)`;
-        }
-      });
+    function handleOrientation(event) {
+      const compassArrow = document.querySelector('.compass-arrow');
+      const alpha = event.alpha; // Compass direction in degrees
+
+      if (alpha !== null) {
+        // Rotate the compass arrow based on the alpha value
+        compassArrow.style.transform = `translate(-50%, -50%) rotate(${alpha}deg)`;
+      }
+    }
+
+    // Check if the DeviceOrientationEvent is supported
+    if (window.DeviceOrientationEvent) {
+      console.log('DeviceOrientationEvent is supported');
     } else {
-      alert("La orientación del dispositivo no está soportada en este navegador.");
+      alert('Sorry, your device does not support the Device Orientation API.');
     }
   </script>
 </body>
