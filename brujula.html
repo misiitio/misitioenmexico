@@ -3,216 +3,138 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Geolocator + Compass</title>
-  <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
-  <script src="https://maps.google.com/maps/api/js?key=YOUR_API_KEY&sensor=true"></script>
+  <title>Brújula Calibrada</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .mx-sidebar {
-      width: 25%;
-      background: #f1f1f1;
-      padding: 15px;
-      float: left;
-    }
-    .mx-content {
-      margin-left: 25%;
-      padding: 15px;
-    }
-    .scrollmenu {
-      overflow: auto;
-      white-space: nowrap;
-      background: #009688;
-      padding: 10px;
-    }
-    .scrollmenu a {
-      color: white;
-      padding: 10px;
-      text-decoration: none;
-    }
-    #mapa {
-      width: 100%;
-      height: 400px;
-      margin-top: 20px;
-    }
-    .compass-container {
-      margin: 20px 0;
       text-align: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f0f0;
     }
     .compass {
-      width: 200px;
-      height: 200px;
-      margin: 0 auto;
+      width: 250px;
+      height: 250px;
+      margin: 20px auto;
       position: relative;
-      background: #fff;
+      background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50" y="15" text-anchor="middle" font-size="10">N</text><text x="85" y="50" text-anchor="middle" font-size="10">E</text><text x="50" y="85" text-anchor="middle" font-size="10">S</text><text x="15" y="50" text-anchor="middle" font-size="10">O</text><circle cx="50" cy="50" r="45" stroke="black" stroke-width="0.5" fill="none"/></svg>') no-repeat center;
       border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     }
     .compass-arrow {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 20px;
+      width: 8px;
       height: 100px;
       transform-origin: 50% 0;
       transform: translate(-50%, -50%);
-      color: red;
-      font-size: 24px;
-      text-align: center;
+      background-color: red;
+      clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
     }
     button {
-      padding: 10px 20px;
-      margin: 5px;
+      padding: 12px 25px;
+      font-size: 16px;
       background: #4CAF50;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      margin: 10px;
     }
     #status {
-      margin: 10px 0;
-      color: #666;
+      margin: 15px;
+      color: #555;
+      min-height: 50px;
+    }
+    .calibration-hint {
+      background: #FFF3CD;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 20px auto;
+      max-width: 300px;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="mx-sidebar mx-light-grey mx-bar-block">
-    <a href="./index.html">Regresar</a>
-    <h3 class="mx-bar-item">Herramientas</h3>
+  <h1>Brújula Digital</h1>
+  
+  <div class="compass">
+    <div class="compass-arrow"></div>
   </div>
-
-  <!-- Page Content -->
-  <div class="mx-content">
-    <div class="mx-teal">
-      <h1><a href="./index.html">Geolocator + Compass</a></h1>
-    </div>
-
-    <div class="scrollmenu">
-      <a href="./factura.html">Facturador</a>
-      <a href="#">vacio</a>
-      <a href="#">vacio</a>
-    </div>
-
-    <div class="mx-container">
-      <!-- Compass Section -->
-      <div class="compass-container">
-        <h2>Brújula</h2>
-        <button id="enable-compass">Activar Brújula</button>
-        <p id="compass-status">Presiona "Activar Brújula" para comenzar.</p>
-        <div class="compass">
-          <div class="compass-arrow">↑</div>
-        </div>
-      </div>
-
-      <!-- Map Section -->
-      <h2>Ubicación en tiempo real</h2>
-      <article id="mapa"></article>
-      <input type="button" id="parar" value="Parar Geolocalización" onclick="detener();"/>
-    </div>
+  
+  <button id="enable-btn">Activar Brújula</button>
+  
+  <p id="status">La brújula requiere acceso a los sensores de tu dispositivo.</p>
+  
+  <div id="calibration-hint" class="calibration-hint">
+    <strong>¿La brújula no es precisa?</strong>
+    <p>Mueve tu dispositivo en forma de "8" en el aire para calibrarlo.</p>
   </div>
 
   <script>
-    // --- Geolocation Code (Your Original Code) ---
-    var watchId;
-    var mapa = null;
-    var mapaMarcador = null;	
-
-    if (navigator.geolocation) {
-      watchId = navigator.geolocation.watchPosition(mostrarPosicion, mostrarErrores, opciones);	
-    } else {
-      alert("Tu navegador no soporta la geolocalización, actualiza tu navegador.");
-    }
-
-    function mostrarPosicion(posicion) {
-      var latitud = posicion.coords.latitude;
-      var longitud = posicion.coords.longitude;
-      var precision = posicion.coords.accuracy;
-
-      var miPosicion = new google.maps.LatLng(latitud, longitud);
-
-      if (mapa == null) {
-        var configuracion = {center: miPosicion, zoom: 16, mapTypeId: google.maps.MapTypeId.HYBRID};
-        mapa = new google.maps.Map(document.getElementById("mapa"), configuracion);
-        mapaMarcador = new google.maps.Marker({position: miPosicion, title:"Esta es tu posición"});
-        mapaMarcador.setMap(mapa);
-      } else {
-        mapa.panTo(miPosicion);
-        mapaMarcador.setPosition(miPosicion);
-      }
-    }
-
-    function mostrarErrores(error) {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          alert('No podrás ver tu ubicación'); 
-          break;
-        case error.POSITION_UNAVAILABLE:
-          alert('Posición no disponible');
-          break; 
-        case error.TIMEOUT:
-          alert('Tiempo de espera agotado');
-          break;
-        default:
-          alert('Error de Geolocalización desconocido :' + error.code);
-      }
-    }
-
-    var opciones = {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 1000
-    };
-
-    function detener() {
-      navigator.geolocation.clearWatch(watchId);
-    }
-
-    // --- Compass Code ---
     const compassArrow = document.querySelector('.compass-arrow');
-    const compassStatus = document.getElementById('compass-status');
-    const enableCompassBtn = document.getElementById('enable-compass');
+    const statusText = document.getElementById('status');
+    const enableBtn = document.getElementById('enable-btn');
+    const calibrationHint = document.getElementById('calibration-hint');
+    let isCompassActive = false;
 
     function handleOrientation(event) {
       if (event.alpha === null) {
-        compassStatus.textContent = "Mueve tu dispositivo en forma de '8' para calibrar la brújula.";
+        if (isCompassActive) {
+          statusText.innerHTML = "Precisión baja<br><small>Mueve el dispositivo en forma de '8'</small>";
+          calibrationHint.style.display = 'block';
+        }
         return;
       }
-      compassArrow.style.transform = `translate(-50%, -50%) rotate(${event.alpha}deg)`;
-      compassStatus.textContent = `Dirección: ${Math.round(event.alpha)}°`;
+      
+      // Valores de orientación
+      const alpha = event.alpha;  // 0-360 grados (Norte=0)
+      compassArrow.style.transform = `translate(-50%, -50%) rotate(${alpha}deg)`;
+      
+      // Mostrar dirección cardinal
+      const directions = ['Norte', 'Noreste', 'Este', 'Sureste', 'Sur', 'Suroeste', 'Oeste', 'Noroeste'];
+      const index = Math.round(alpha / 45) % 8;
+      statusText.innerHTML = `${Math.round(alpha)}° <strong>${directions[index]}</strong>`;
+      
+      // Ocultar sugerencia de calibración si funciona
+      calibrationHint.style.display = 'none';
     }
 
     function enableCompass() {
-      if (typeof DeviceOrientationEvent !== 'undefined' && 
-          typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ permission flow
-        DeviceOrientationEvent.requestPermission()
-          .then(response => {
-            if (response === 'granted') {
-              window.addEventListener('deviceorientation', handleOrientation);
-              compassStatus.textContent = "Brújula activada. Gira tu dispositivo.";
-              enableCompassBtn.style.display = 'none';
-            } else {
-              compassStatus.textContent = "Permiso denegado. Recarga y vuelve a intentar.";
-            }
-          })
-          .catch(console.error);
-      } else {
-        // Non-iOS devices
-        if (window.DeviceOrientationEvent) {
-          window.addEventListener('deviceorientation', handleOrientation);
-          compassStatus.textContent = "Brújula activada. Gira tu dispositivo.";
-          enableCompassBtn.style.display = 'none';
+      if (typeof DeviceOrientationEvent !== 'undefined') {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+          // iOS 13+ - requiere interacción del usuario
+          DeviceOrientationEvent.requestPermission()
+            .then(response => {
+              if (response === 'granted') {
+                startCompass();
+              } else {
+                statusText.textContent = "Permiso denegado. Recarga la página e intenta nuevamente.";
+              }
+            })
+            .catch(console.error);
         } else {
-          compassStatus.textContent = "Tu dispositivo no soporta la brújula.";
+          // Android y otros navegadores
+          startCompass();
         }
+      } else {
+        statusText.textContent = "Tu navegador no soporta la API de Orientación del Dispositivo.";
       }
     }
 
-    enableCompassBtn.addEventListener('click', enableCompass);
+    function startCompass() {
+      window.addEventListener('deviceorientation', handleOrientation);
+      isCompassActive = true;
+      statusText.textContent = "Brújula activada. Apunta hacia el Norte.";
+      enableBtn.textContent = "Brújula Activada";
+      enableBtn.style.backgroundColor = "#45a049";
+      enableBtn.disabled = true;
+      calibrationHint.style.display = 'block';
+    }
+
+    enableBtn.addEventListener('click', enableCompass);
   </script>
 </body>
-  </html>
+</html>
