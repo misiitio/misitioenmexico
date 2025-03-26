@@ -3,138 +3,91 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Brújula Calibrada</title>
+  <title>Brújula para Android</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
       padding: 20px;
-      background-color: #f0f0f0;
+      background-color: #f5f5f5;
     }
     .compass {
       width: 250px;
       height: 250px;
-      margin: 20px auto;
+      margin: 30px auto;
       position: relative;
-      background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50" y="15" text-anchor="middle" font-size="10">N</text><text x="85" y="50" text-anchor="middle" font-size="10">E</text><text x="50" y="85" text-anchor="middle" font-size="10">S</text><text x="15" y="50" text-anchor="middle" font-size="10">O</text><circle cx="50" cy="50" r="45" stroke="black" stroke-width="0.5" fill="none"/></svg>') no-repeat center;
+      background: #fff;
       border-radius: 50%;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50" y="18" text-anchor="middle" fill="red" font-size="12">N</text><text x="82" y="50" text-anchor="middle" font-size="10">E</text><text x="50" y="82" text-anchor="middle" font-size="10">S</text><text x="18" y="50" text-anchor="middle" font-size="10">O</text><circle cx="50" cy="50" r="40" stroke="black" stroke-width="0.5" fill="none"/></svg>');
+      background-size: 100%;
     }
     .compass-arrow {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 8px;
+      width: 6px;
       height: 100px;
+      background-color: red;
       transform-origin: 50% 0;
       transform: translate(-50%, -50%);
-      background-color: red;
       clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
     }
-    button {
-      padding: 12px 25px;
-      font-size: 16px;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 10px;
-    }
     #status {
-      margin: 15px;
-      color: #555;
-      min-height: 50px;
+      margin: 20px;
+      font-size: 18px;
+      color: #333;
     }
     .calibration-hint {
-      background: #FFF3CD;
+      background-color: #FFF3E0;
       padding: 10px;
-      border-radius: 5px;
+      border-radius: 8px;
       margin: 20px auto;
-      max-width: 300px;
-      display: none;
+      max-width: 280px;
     }
   </style>
 </head>
 <body>
-  <h1>Brújula Digital</h1>
+  <h1>Brújula para Android</h1>
   
   <div class="compass">
     <div class="compass-arrow"></div>
   </div>
   
-  <button id="enable-btn">Activar Brújula</button>
+  <div id="status">Inicializando brújula...</div>
   
-  <p id="status">La brújula requiere acceso a los sensores de tu dispositivo.</p>
-  
-  <div id="calibration-hint" class="calibration-hint">
-    <strong>¿La brújula no es precisa?</strong>
-    <p>Mueve tu dispositivo en forma de "8" en el aire para calibrarlo.</p>
+  <div class="calibration-hint">
+    <strong>Consejo:</strong> Si la brújula no es precisa, mueve tu teléfono en forma de "8" en el aire.
   </div>
 
   <script>
     const compassArrow = document.querySelector('.compass-arrow');
     const statusText = document.getElementById('status');
-    const enableBtn = document.getElementById('enable-btn');
-    const calibrationHint = document.getElementById('calibration-hint');
-    let isCompassActive = false;
-
+    
     function handleOrientation(event) {
-      if (event.alpha === null) {
-        if (isCompassActive) {
-          statusText.innerHTML = "Precisión baja<br><small>Mueve el dispositivo en forma de '8'</small>";
-          calibrationHint.style.display = 'block';
-        }
-        return;
+      if (event.alpha !== null) {
+        const degree = Math.round(event.alpha);
+        compassArrow.style.transform = `translate(-50%, -50%) rotate(${degree}deg)`;
+        
+        // Mostrar dirección cardinal
+        const directions = ['Norte', 'Noreste', 'Este', 'Sureste', 'Sur', 'Suroeste', 'Oeste', 'Noroeste'];
+        const index = Math.round((degree % 360) / 45) % 8;
+        statusText.innerHTML = `${degree}° <strong>${directions[index]}</strong>`;
       }
-      
-      // Valores de orientación
-      const alpha = event.alpha;  // 0-360 grados (Norte=0)
-      compassArrow.style.transform = `translate(-50%, -50%) rotate(${alpha}deg)`;
-      
-      // Mostrar dirección cardinal
-      const directions = ['Norte', 'Noreste', 'Este', 'Sureste', 'Sur', 'Suroeste', 'Oeste', 'Noroeste'];
-      const index = Math.round(alpha / 45) % 8;
-      statusText.innerHTML = `${Math.round(alpha)}° <strong>${directions[index]}</strong>`;
-      
-      // Ocultar sugerencia de calibración si funciona
-      calibrationHint.style.display = 'none';
     }
-
-    function enableCompass() {
-      if (typeof DeviceOrientationEvent !== 'undefined') {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-          // iOS 13+ - requiere interacción del usuario
-          DeviceOrientationEvent.requestPermission()
-            .then(response => {
-              if (response === 'granted') {
-                startCompass();
-              } else {
-                statusText.textContent = "Permiso denegado. Recarga la página e intenta nuevamente.";
-              }
-            })
-            .catch(console.error);
-        } else {
-          // Android y otros navegadores
-          startCompass();
-        }
+    
+    // Verificar compatibilidad
+    if (window.DeviceOrientationEvent) {
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        statusText.textContent = "Este dispositivo parece ser iOS. Recarga en Android.";
       } else {
-        statusText.textContent = "Tu navegador no soporta la API de Orientación del Dispositivo.";
+        window.addEventListener('deviceorientation', handleOrientation);
+        statusText.textContent = "Brújula activada. Apunta hacia el Norte.";
       }
+    } else {
+      statusText.textContent = "Error: Tu dispositivo no soporta la brújula.";
     }
-
-    function startCompass() {
-      window.addEventListener('deviceorientation', handleOrientation);
-      isCompassActive = true;
-      statusText.textContent = "Brújula activada. Apunta hacia el Norte.";
-      enableBtn.textContent = "Brújula Activada";
-      enableBtn.style.backgroundColor = "#45a049";
-      enableBtn.disabled = true;
-      calibrationHint.style.display = 'block';
-    }
-
-    enableBtn.addEventListener('click', enableCompass);
   </script>
 </body>
 </html>
