@@ -3,76 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compass</title>
+  <title>Compass Demo</title>
   <style>
-    /* CSS Styling */
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      font-family: Arial, sans-serif;
+      text-align: center;
       margin: 0;
+      padding: 20px;
       background-color: #f0f0f0;
     }
-
     .compass {
       width: 200px;
       height: 200px;
+      margin: 30px auto;
       position: relative;
-    }
-
-    .compass-circle {
-      width: 100%;
-      height: 100%;
-      border: 5px solid #333;
+      background: #fff;
       border-radius: 50%;
-      position: relative;
-      background-color: #fff;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
-
     .compass-arrow {
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 100px solid red;
       position: absolute;
       top: 50%;
       left: 50%;
+      width: 20px;
+      height: 100px;
+      transform-origin: 50% 0;
       transform: translate(-50%, -50%);
-      transform-origin: bottom center;
+      color: red;
+      font-size: 24px;
+      text-align: center;
+    }
+    .compass-markers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 20px;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <!-- HTML Structure -->
+  <h1>Compass Demo</h1>
   <div class="compass">
-    <div class="compass-circle">
-      <div class="compass-arrow"></div>
-    </div>
+    <div class="compass-markers">N</div>
+    <div class="compass-arrow">↑</div>
   </div>
+  <button id="enable-btn">Enable Compass</button>
+  <p id="status">Press "Enable Compass" to start.</p>
 
-  <!-- JavaScript Logic -->
   <script>
-    window.addEventListener('deviceorientation', handleOrientation);
+    const compassArrow = document.querySelector('.compass-arrow');
+    const statusText = document.getElementById('status');
+    const enableBtn = document.getElementById('enable-btn');
 
+    // Handle compass orientation updates
     function handleOrientation(event) {
-      const compassArrow = document.querySelector('.compass-arrow');
-      const alpha = event.alpha; // Compass direction in degrees
+      if (event.alpha === null) {
+        statusText.textContent = "Compass data not available. Move your device in a figure-8 motion.";
+        return;
+      }
 
-      if (alpha !== null) {
-        // Rotate the compass arrow based on the alpha value
-        compassArrow.style.transform = `translate(-50%, -50%) rotate(${alpha}deg)`;
+      // Rotate the arrow (0 = North, 90 = East, etc.)
+      compassArrow.style.transform = `translate(-50%, -50%) rotate(${event.alpha}deg)`;
+      statusText.textContent = `Heading: ${Math.round(event.alpha)}°`;
+    }
+
+    // Request permission (required for iOS)
+    function enableCompass() {
+      if (typeof DeviceOrientationEvent !== 'undefined' && 
+          typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ permission flow
+        DeviceOrientationEvent.requestPermission()
+          .then(response => {
+            if (response === 'granted') {
+              window.addEventListener('deviceorientation', handleOrientation);
+              statusText.textContent = "Compass enabled! Rotate your device.";
+              enableBtn.style.display = 'none';
+            } else {
+              statusText.textContent = "Permission denied. Refresh and try again.";
+            }
+          })
+          .catch(console.error);
+      } else {
+        // Non-iOS devices (or older browsers)
+        if (window.DeviceOrientationEvent) {
+          window.addEventListener('deviceorientation', handleOrientation);
+          statusText.textContent = "Compass enabled! Rotate your device.";
+          enableBtn.style.display = 'none';
+        } else {
+          statusText.textContent = "Sorry, your device/browser doesn't support the compass.";
+        }
       }
     }
 
-    // Check if the DeviceOrientationEvent is supported
-    if (window.DeviceOrientationEvent) {
-      console.log('DeviceOrientationEvent is supported');
-    } else {
-      alert('Sorry, your device does not support the Device Orientation API.');
-    }
+    // Attach button click handler
+    enableBtn.addEventListener('click', enableCompass);
   </script>
 </body>
 </html>
