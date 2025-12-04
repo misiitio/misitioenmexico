@@ -157,13 +157,31 @@ div.scrollmenu a:hover {
 <h3>Sobre Misitioenmexico</h3>
 <p>Trabaja en la digitalización del desarrollo de pequeños negocios a grandes empresas como servicios productos e informacion facilite la disponibilidad a todo el público en general.</p>
 
-<iframe>
-    width="35%"
-    height="600"
-    frameborder="0"
-    src="https://www.bing.com/maps/embed?&cp=23.6345~-102.5528&lvl=5&typ=d&sty=r&key=TU_CLAVE_DE_API"
-    allowfullscreen
-</iframe>
+<link href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" rel="stylesheet" /> 
+<script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+<script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
+<script>
+var map;
+function GetMap() {
+              //Initialize a map instance.
+            map = new atlas.Map('myMap', {
+                center: [-99.140625,19.311143355064644],
+                zoom: 3,
+                view: 'Auto',
+
+                //Add authentication details for connecting to Azure Maps.
+                authOptions: {
+                    authType: 'subscriptionKey',
+                    subscriptionKey: '35t-hsAMcragzjbqAFxSo9aeyAPLqneR-hYrhkE1iEg'
+                }
+            });
+          }
+</script>
+<body onload="GetMap()">
+  <div id="myMap" style="position:relative;width:570px;min-width:290px;height:610px;"></div>
+  <a href="https://ivatech.dev" style="display:none;">web development</a>
+</body>
+
 
 
 <script type="text/javascript">
