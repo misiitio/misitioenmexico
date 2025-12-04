@@ -158,13 +158,31 @@ div.scrollmenu a:hover {
 <p>Trabaja en la digitalización del desarrollo de pequeños negocios a grandes empresas como servicios productos e informacion facilite la disponibilidad a todo el público en general.</p>
 
 
-    <!-- Azure Maps responsive iframe (key inserted) -->
-<div class="azure-map-wrapper">
-    <iframe
-        src="https://atlas.microsoft.com/map/embed?subscription-key=35t-hsAMcragzjbqAFxSo9aeyAPLqneR-hYrhkE1iEg&api-version=2.0&center=23.6345,-102.5528&zoom=5&language=es-ES&view=Auto"
-        allowfullscreen>
-    </iframe>
-</div>
+<link href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" rel="stylesheet" /> 
+<script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+<script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
+<script>
+var map;
+function GetMap() {
+              //Initialize a map instance.
+            map = new atlas.Map('myMap', {
+                center: [-99.14771800000001,19.37085955889232],
+                zoom: 3,
+                view: 'Auto',
+
+                //Add authentication details for connecting to Azure Maps.
+                authOptions: {
+                    authType: 'subscriptionKey',
+                    subscriptionKey: '35t-hsAMcragzjbqAFxSo9aeyAPLqneR-hYrhkE1iEg'
+                }
+            });
+          }
+</script>
+<body onload="GetMap()">
+  <div id="myMap" style="position:relative;width:570px;min-width:290px;height:610px;"></div>
+  <a href="https://ivatech.dev" style="display:none;">web development</a>
+</body>
+
 
 
 
